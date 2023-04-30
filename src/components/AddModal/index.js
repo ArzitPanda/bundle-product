@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import "./Modal.css";
 import { Button, Checkbox, Modal } from "@mui/material";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
+import { addReducer } from "../../reducer/AddReducer";
+
 const AddModal = ({
   open,
   product,
   setOpen,
   setArr,
   arr,
+  clicked,
   variant,
   setVariant,
 }) => {
+
+
+  const [state,dispatch]=useReducer(addReducer,{ products:[],add_id:true})
   const [result, setResult] = useState([]);
 
   const [search, setSearch] = useState("");
@@ -42,6 +48,7 @@ const AddModal = ({
   const handleAllCheck = (e, ele) => {
     {
       if (e.target.checked === true) {
+        dispatch({type:"ADD_ALL",payload:{ele,clicked}})
         for (
           let index = 0;
           index < document.getElementsByClassName("check-" + ele.id).length;
@@ -51,10 +58,11 @@ const AddModal = ({
             index
           ].checked = true;
         }
-        setVariant([...variant, ...ele?.variants]);
+       
       }
       else
       {
+        dispatch({type:"REMOVE_ALL",payload:{ele}})
         for (
           let index = 0;
           index < document.getElementsByClassName("check-" + ele.id).length;
@@ -64,26 +72,35 @@ const AddModal = ({
             index
           ].checked = false;
         }
-        let temp =variant.filter((item)=>item.product_id!==ele.id)
-         setVariant(temp)
+       
       }
     }
   };
+
+const handlecancelProduct =()=>{
+  dispatch({type:"cancel"})
+  setOpen(false)
+
+}
+
   const handleAddProduct = () => {
-    const { add_id } = product;
 
-    const temparr = arr.map((ele) => {
-      if (ele.add_id === add_id) {
-        return { ...ele, product_fetch };
-      } else {
-        return ele;
-      }
-    });
+    if(state?.products.length)
+    {
+      console.log(state.products)
 
-    setArr(temparr);
+      let temparr = arr.filter((item)=>item.add_id!==clicked.add_id)
+      setArr([...temparr,...state.products])
+      console.log(arr);
+      dispatch({type:"cancel"})
 
-    console.log("temp_arr", temparr);
-    console.log(variant);
+    }
+    else
+    {
+      console.log("nothing")
+    }
+    setOpen(false)
+  
   };
 
   useEffect(() => {
@@ -147,16 +164,16 @@ const AddModal = ({
                           type="checkbox"
                           className={"check-" + ele.id}
                           onChange={(e) => {
-                            let temp = [...variant];
+                          
 
                             if (e.target.checked === true) {
-                              temp.push({ ...elem, checked: true });
+                              dispatch({type:"ADD_ONE",payload:{ele,elem,clicked}})
+                           
                             } else if (e.target.checked === false) {
-                              temp = variant.filter(
-                                (elems) => elems.id !== elem.id
-                              );
+                              dispatch({type:"REMOVE_ONE",payload:{ele,elem}})
+                              
                             }
-                            setVariant(temp);
+                        
                           }}
                         />
                        <div>{elem.title}</div>
@@ -174,9 +191,9 @@ const AddModal = ({
           })}
         </div>
         <div className="endBox">
-         <h4>4 products selected</h4>
+         <h4>{state?.products.length || "no item selected"} products selected</h4>
          <div className="btn_container">
-         <div onClick={handleAddProduct}  className="btn_cancel">cancel</div>
+         <div onClick={handlecancelProduct}  className="btn_cancel">cancel</div>
          <button onClick={handleAddProduct} className="btn_add">Add</button>
          </div>
         </div>
