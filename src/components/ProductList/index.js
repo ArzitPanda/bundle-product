@@ -9,20 +9,15 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { v4 as uuid } from "uuid";
 
 const ProductList = () => {
-
-
-
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
-  
+
     return result;
   };
 
-  
-
-  const [arr, setArr] = useState([{ add_id: uuid(),variants:[] }]);
+  const [arr, setArr] = useState([{ add_id: uuid(), variants: [] }]);
   const [variant, setVariant] = useState([]);
   const [clicked, setClicked] = useState(arr[0]);
   const [open, setOpen] = useState(false);
@@ -30,8 +25,7 @@ const ProductList = () => {
   const [isVariantOpen, setIsVariantOpen] = useState(false);
 
   const handleAddProduct = () => {
- 
-    setArr([...arr,{add_id:uuid(),variants:[]}])
+    setArr([...arr, { add_id: uuid(), variants: [] }]);
   };
 
   const handleRemove = (ele) => {
@@ -48,33 +42,33 @@ const ProductList = () => {
     setClicked(ele);
     setOpen(true);
   };
-  const handleVariants = (ele,e) => {
+  const handleVariants = (ele, e) => {
     setIsVariantOpen(!isVariantOpen);
   };
 
   return (
     <div className="main">
       <div className="heading_text">Add Product</div>
-      <DragDropContext onDragEnd={(result)=>{
-        console.log(result)
-        if (!result.destination) {
-          return;
-        }
-    
-        if (result.destination.index === result.source.index) {
-          return;
-        }
-    
-        const temp = reorder(
-          arr,
-          result.source.index,
-          result.destination.index
-        );
-    
-        setArr(temp)
+      <DragDropContext
+        onDragEnd={(result) => {
+          console.log(result);
+          if (!result.destination) {
+            return;
+          }
 
+          if (result.destination.index === result.source.index) {
+            return;
+          }
 
-      }}>
+          const temp = reorder(
+            arr,
+            result.source.index,
+            result.destination.index
+          );
+
+          setArr(temp);
+        }}
+      >
         <Droppable droppableId="List">
           {(provided) => (
             <div
@@ -99,8 +93,7 @@ const ProductList = () => {
                         <div className="first_section">
                           <h1>
                             {(ele?.title &&
-                              ele?.title.slice(0, 15) +
-                                ". . .") ||
+                              ele?.title.slice(0, 15) + ". . .") ||
                               "select product"}
                           </h1>
 
@@ -110,13 +103,30 @@ const ProductList = () => {
                           />
                         </div>
                         <div className="second_section">
-                          <div className="discount" onClick={(e)=>{
-                              document.getElementsByClassName("discount")[0].classList.replace("discount","discount_hidden")
-                              document.getElementById("discount"+ele.add_id).style.display="flex";
-
-                          }}>add discounts</div>
-                          <div id={"discount"+ele.add_id} className="addDiscount">
-                            <input type="text" className="input_discount" ></input>
+                          <div
+                            className="discount"
+                            onClick={(e) => {
+                              document
+                                .getElementsByClassName("discount")[0]
+                                .classList.replace(
+                                  "discount",
+                                  "discount_hidden"
+                                );
+                              document.getElementById(
+                                "discount" + ele.add_id
+                              ).style.display = "flex";
+                            }}
+                          >
+                            add discounts
+                          </div>
+                          <div
+                            id={"discount" + ele.add_id}
+                            className="addDiscount"
+                          >
+                            <input
+                              type="text"
+                              className="input_discount"
+                            ></input>
                             <select className="discount_select">
                               <option>Flat Off</option>
                               <option>Percent off</option>
@@ -131,124 +141,125 @@ const ProductList = () => {
                       </div>
 
                       <div className="third_section">
-                      {
-                        (variant.filter(item=>item.prouct_id===ele?.product_fetch?.id)) &&
-                        ( <div className="list_variant_container">
-                        <button
-                          onClick={(e) => {
-                            handleVariants(ele,e);
+                        {variant.filter(
+                          (item) => item.prouct_id === ele?.product_fetch?.id
+                        ) && (
+                          <div className="list_variant_container">
+                            <button
+                              onClick={(e) => {
+                                handleVariants(ele, e);
+                              }}
+                            >
+                              list variants <MdKeyboardArrowDown />
+                            </button>
+                          </div>
+                        )}
+                        <DragDropContext
+                          onDragEnd={(result) => {
+                            console.log(result);
+                            if (!result.destination) {
+                              return;
+                            }
+
+                            if (
+                              result.destination.index === result.source.index
+                            ) {
+                              return;
+                            }
+
+                            let temp = reorder(
+                              ele?.variants,
+                              result.source.index,
+                              result.destination.index
+                            );
+
+                            const temparr = arr.map((item) => {
+                              if (item.add_id === ele.add_id) {
+                                return { ...item, variant: temp };
+                              }
+                              return item;
+                            });
+                            setArr(temparr);
                           }}
                         >
-                          list variants <MdKeyboardArrowDown />
-                        </button>
-                      </div>)
-                      }
-                        <DragDropContext
-                        
-                        onDragEnd={(result)=>{
-                          console.log(result)
-                          if (!result.destination) {
-                            return;
-                          }
-                      
-                          if (result.destination.index === result.source.index) {
-                            return;
-                          }
-                      
-                          let temp = reorder(
-                           ele?.variants,
-                            result.source.index,
-                            result.destination.index
-                          );
-                      
-                         
-                         const temparr =arr.map((item)=>{
-                          if(item.add_id===ele.add_id)
-                          {
-                            return {...item,variant:temp}
-                          }
-                          return item
-                         })
-                         setArr(temparr);
-                        }}
-                        
-                        
-                        >
-                          <Droppable droppableId="variant"
-                          
-                          
-                          >
-
-                            {
-                              (provided)=>(
-                                <div 
+                          <Droppable droppableId="variant">
+                            {(provided) => (
+                              <div
                                 {...provided.droppableProps}
-                               ref={provided.innerRef}
-                               id={"subItem-"+ele.id}
-                                >
+                                ref={provided.innerRef}
+                                id={"subItem-" + ele.id}
+                              >
                                 {isVariantOpen &&
-                                  
-                                    ele?.variants.map((elem,index) => {
-                                      return (
-                                        <Draggable draggableId={elem.id.toString()} index={index}  key={elem.id} >
-                                          {
-                                              (provided)=> (
-                                                <div
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                ref={provided.innerRef}
+                                  ele?.variants.map((elem, index) => {
+                                    return (
+                                      <Draggable
+                                        draggableId={elem.id.toString()}
+                                        index={index}
+                                        key={elem.id}
+                                      >
+                                        {(provided) => (
+                                          <div
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            ref={provided.innerRef}
                                             className="subItem_container"
                                           >
-                                            <img src={Dragger} className="img_util" />
+                                            <img
+                                              src={Dragger}
+                                              className="img_util"
+                                            />
                                             <div className="subItem">
                                               <img src="" className="" />
                                               <h2>{elem.title}</h2>
                                             </div>
                                             <img
-                            src={cancel}
-                            className="img_util"
-                            onClick={() => {
-                              let temp =ele.variants.filter(item=>item.id!==elem.id)
-                            
-                              let temparr =ele.variants.filter(item=>item.id===elem.id).length
-                               
-                                if(temparr===0)
-                                {
-                                  let temp2 =arr.filter(item=>item.add_id!==ele.add_id)
-                                  setArr(temp2)
-                                }
-                                else
-                                {
-                                  let temp3 =arr.map((item)=>{
-                                    if(ele.add_id===item.add_id)
-                                    {
-                                      return {...item,variants:temp}
-                                    }
-                                    return item
+                                              src={cancel}
+                                              className="img_util"
+                                              onClick={() => {
+                                                let temp = ele.variants.filter(
+                                                  (item) => item.id !== elem.id
+                                                );
 
-                                  })
-                                  setArr(temp3)
-                                }
+                                                let temparr =
+                                                  ele.variants.filter(
+                                                    (item) =>
+                                                      item.id === elem.id
+                                                  ).length;
 
-
-                            }}
-                          />
+                                                if (temparr === 0) {
+                                                  let temp2 = arr.filter(
+                                                    (item) =>
+                                                      item.add_id !== ele.add_id
+                                                  );
+                                                  setArr(temp2);
+                                                } else {
+                                                  let temp3 = arr.map(
+                                                    (item) => {
+                                                      if (
+                                                        ele.add_id ===
+                                                        item.add_id
+                                                      ) {
+                                                        return {
+                                                          ...item,
+                                                          variants: temp,
+                                                        };
+                                                      }
+                                                      return item;
+                                                    }
+                                                  );
+                                                  setArr(temp3);
+                                                }
+                                              }}
+                                            />
                                           </div>
-                                              )
-                                          }
-                                        
-                                        </Draggable>
-                                     
-                                       
-                                      );
-                                    })}
-                                      </div>
-                              )
-
-                            }
-                        
-                            </Droppable>  
-                            </DragDropContext>
+                                        )}
+                                      </Draggable>
+                                    );
+                                  })}
+                              </div>
+                            )}
+                          </Droppable>
+                        </DragDropContext>
                       </div>
                     </div>
                   )}

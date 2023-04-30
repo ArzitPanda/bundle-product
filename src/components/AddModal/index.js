@@ -16,9 +16,10 @@ const AddModal = ({
   variant,
   setVariant,
 }) => {
-
-
-  const [state,dispatch]=useReducer(addReducer,{ products:[],add_id:true})
+  const [state, dispatch] = useReducer(addReducer, {
+    products: [],
+    add_id: true,
+  });
   const [result, setResult] = useState([]);
 
   const [search, setSearch] = useState("");
@@ -48,7 +49,7 @@ const AddModal = ({
   const handleAllCheck = (e, ele) => {
     {
       if (e.target.checked === true) {
-        dispatch({type:"ADD_ALL",payload:{ele,clicked}})
+        dispatch({ type: "ADD_ALL", payload: { ele, clicked } });
         for (
           let index = 0;
           index < document.getElementsByClassName("check-" + ele.id).length;
@@ -58,11 +59,8 @@ const AddModal = ({
             index
           ].checked = true;
         }
-       
-      }
-      else
-      {
-        dispatch({type:"REMOVE_ALL",payload:{ele}})
+      } else {
+        dispatch({ type: "REMOVE_ALL", payload: { ele } });
         for (
           let index = 0;
           index < document.getElementsByClassName("check-" + ele.id).length;
@@ -72,35 +70,27 @@ const AddModal = ({
             index
           ].checked = false;
         }
-       
       }
     }
   };
 
-const handlecancelProduct =()=>{
-  dispatch({type:"cancel"})
-  setOpen(false)
-
-}
+  const handlecancelProduct = () => {
+    dispatch({ type: "cancel" });
+    setOpen(false);
+  };
 
   const handleAddProduct = () => {
+    if (state?.products.length) {
+      console.log(state.products);
 
-    if(state?.products.length)
-    {
-      console.log(state.products)
-
-      let temparr = arr.filter((item)=>item.add_id!==clicked.add_id)
-      setArr([...temparr,...state.products])
+      let temparr = arr.filter((item) => item.add_id !== clicked.add_id);
+      setArr([...temparr, ...state.products]);
       console.log(arr);
-      dispatch({type:"cancel"})
-
+      dispatch({ type: "cancel" });
+    } else {
+      console.log("nothing");
     }
-    else
-    {
-      console.log("nothing")
-    }
-    setOpen(false)
-  
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -159,29 +149,29 @@ const handlecancelProduct =()=>{
                   ele.variants.map((elem) => {
                     return (
                       <div key={elem.id} className="variant_container">
-                        <div  className="first_section_variant">
-                        <input
-                          type="checkbox"
-                          className={"check-" + ele.id}
-                          onChange={(e) => {
-                          
-
-                            if (e.target.checked === true) {
-                              dispatch({type:"ADD_ONE",payload:{ele,elem,clicked}})
-                           
-                            } else if (e.target.checked === false) {
-                              dispatch({type:"REMOVE_ONE",payload:{ele,elem}})
-                              
-                            }
-                        
-                          }}
-                        />
-                       <div>{elem.title}</div>
-
+                        <div className="first_section_variant">
+                          <input
+                            type="checkbox"
+                            className={"check-" + ele.id}
+                            onChange={(e) => {
+                              if (e.target.checked === true) {
+                                dispatch({
+                                  type: "ADD_ONE",
+                                  payload: { ele, elem, clicked },
+                                });
+                              } else if (e.target.checked === false) {
+                                dispatch({
+                                  type: "REMOVE_ONE",
+                                  payload: { ele, elem },
+                                });
+                              }
+                            }}
+                          />
+                          <div>{elem.title}</div>
                         </div>
                         <div className="second_section_variant">
-                        <div>{elem.inventory_quantity} available</div>
-                        <div>$ {elem.price}</div>
+                          <div>{elem.inventory_quantity} available</div>
+                          <div>$ {elem.price}</div>
                         </div>
                       </div>
                     );
@@ -191,11 +181,17 @@ const handlecancelProduct =()=>{
           })}
         </div>
         <div className="endBox">
-         <h4>{state?.products.length || "no item selected"} products selected</h4>
-         <div className="btn_container">
-         <div onClick={handlecancelProduct}  className="btn_cancel">cancel</div>
-         <button onClick={handleAddProduct} className="btn_add">Add</button>
-         </div>
+          <h4>
+            {state?.products.length || "no item selected"} products selected
+          </h4>
+          <div className="btn_container">
+            <div onClick={handlecancelProduct} className="btn_cancel">
+              cancel
+            </div>
+            <button onClick={handleAddProduct} className="btn_add">
+              Add
+            </button>
+          </div>
         </div>
       </div>
     </Modal>
