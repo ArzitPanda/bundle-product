@@ -108,7 +108,7 @@ const AddModal = ({
         <div className="searchBox">
           <div className="searchHeading_container">
             <h1>search products</h1>
-            <MdOutlineCancel />
+            <MdOutlineCancel className="cancel_util"  onClick={()=>setOpen(false)}/>
           </div>
           <div className="search_container">
             <AiOutlineSearch />

@@ -1,7 +1,8 @@
 .modal {
-  width: 663px;
-  height: 612px;
+  width: 41.43rem;
+  height: 38.25rem;
   margin: auto;
+  margin-top: 50px;
 
   background: #ffffff;
   border-radius: 4px;
@@ -202,4 +203,19 @@ input {
 
   color: rgba(0, 0, 0, 0.9);
   margin-left: 20px;
+}
+
+.cancel_util
+{
+  margin-right: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .modal
+  {
+   
+
+    transform: scale(.5);
+    margin: 0;
+  }
 }

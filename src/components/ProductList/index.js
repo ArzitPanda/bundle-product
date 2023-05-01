@@ -17,6 +17,10 @@ const ProductList = () => {
     return result;
   };
 
+
+
+
+
   const [arr, setArr] = useState([{ add_id: uuid(), variants: [] }]);
   const [variant, setVariant] = useState([]);
   const [clicked, setClicked] = useState(arr[0]);
@@ -90,6 +94,8 @@ const ProductList = () => {
                       className="product_item_container"
                     >
                       <div className="product_item">
+                        <img src={Dragger} className="img_util" />
+                        <div className="productCount">{idx+1}.</div>
                         <div className="first_section">
                           <h1>
                             {(ele?.title &&
@@ -141,13 +147,18 @@ const ProductList = () => {
                       </div>
 
                       <div className="third_section">
-                        {variant.filter(
-                          (item) => item.prouct_id === ele?.product_fetch?.id
-                        ) && (
+                        { ele.variants.length!==0
+                        && (
                           <div className="list_variant_container">
+                            {
+
+                            }
                             <button
                               onClick={(e) => {
-                                handleVariants(ele, e);
+
+                                 
+                                document.getElementById("subItem-"+ele.add_id).classList.toggle("invisible")
+                            
                               }}
                             >
                               list variants <MdKeyboardArrowDown />
@@ -187,9 +198,10 @@ const ProductList = () => {
                               <div
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
-                                id={"subItem-" + ele.id}
+                                id={"subItem-"+ele.add_id}
+                               
                               >
-                                {isVariantOpen &&
+                                {
                                   ele?.variants.map((elem, index) => {
                                     return (
                                       <Draggable
