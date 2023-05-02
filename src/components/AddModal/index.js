@@ -117,6 +117,7 @@ const AddModal = ({
               onChange={handleInput}
               value={search}
               placeholder="search products"
+             
             />
           </div>
         </div>
@@ -136,6 +137,7 @@ const AddModal = ({
                       type="checkbox"
                       className="checkbox_add"
                       onChange={(e) => handleAllCheck(e, ele)}
+                      style={{backgroundColor:"green"}}
                     />
                     <img
                       src={ele?.image?.src}

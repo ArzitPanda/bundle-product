@@ -268,6 +268,7 @@ const ProductList = () => {
                                       </Draggable>
                                     );
                                   })}
+                                  {provided.placeholder}
                               </div>
                             )}
                           </Droppable>
@@ -277,6 +278,7 @@ const ProductList = () => {
                   )}
                 </Draggable>
               ))}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>
