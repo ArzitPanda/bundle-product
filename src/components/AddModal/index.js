@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 import "./Modal.css";
-import { Button, Checkbox, Modal } from "@mui/material";
+import { Modal } from "@mui/material";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -108,7 +108,10 @@ const AddModal = ({
         <div className="searchBox">
           <div className="searchHeading_container">
             <h1>search products</h1>
-            <MdOutlineCancel className="cancel_util"  onClick={()=>setOpen(false)}/>
+            <MdOutlineCancel
+              className="cancel_util"
+              onClick={() => setOpen(false)}
+            />
           </div>
           <div className="search_container">
             <AiOutlineSearch />
@@ -117,7 +120,6 @@ const AddModal = ({
               onChange={handleInput}
               value={search}
               placeholder="search products"
-             
             />
           </div>
         </div>
@@ -137,7 +139,7 @@ const AddModal = ({
                       type="checkbox"
                       className="checkbox_add"
                       onChange={(e) => handleAllCheck(e, ele)}
-                      style={{backgroundColor:"green"}}
+                      style={{ backgroundColor: "green" }}
                       id={`check-${ele.id}`}
                     />
                     <img
@@ -163,21 +165,23 @@ const AddModal = ({
                                   payload: { ele, elem, clicked },
                                 });
 
-                                document.getElementById(`check-${ele.id}`).checked =true;
+                                document.getElementById(
+                                  `check-${ele.id}`
+                                ).checked = true;
                               } else if (e.target.checked === false) {
                                 dispatch({
                                   type: "REMOVE_ONE",
                                   payload: { ele, elem },
                                 });
-                                let a = state.products.findIndex((item)=>item.id===ele.id)
+                                let a = state.products.findIndex(
+                                  (item) => item.id === ele.id
+                                );
                                 console.log(a);
-                                if(state.products[a].variants.length===1)
-                                {
-                                    
-                                      document.getElementById(`check-${ele.id}`).checked =false;
-                                    
+                                if (state.products[a].variants.length === 1) {
+                                  document.getElementById(
+                                    `check-${ele.id}`
+                                  ).checked = false;
                                 }
-                                
                               }
                             }}
                           />
@@ -195,9 +199,7 @@ const AddModal = ({
           })}
         </div>
         <div className="endBox">
-          <h4>
-            {state?.products.length || "0"} products selected
-          </h4>
+          <h4>{state?.products.length || "0"} products selected</h4>
           <div className="btn_container">
             <div onClick={handlecancelProduct} className="btn_cancel">
               cancel

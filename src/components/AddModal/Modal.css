@@ -205,26 +205,20 @@ input {
   margin-left: 20px;
 }
 
-.cancel_util
-{
+.cancel_util {
   margin-right: 10px;
 }
 
 @media only screen and (max-width: 600px) {
-  .modal
-  {
-   
-
-  margin: 0;
-  height: 100vh;
-  width: 100vw;
+  .modal {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
   }
-  .contentShow
-  {
+  .contentShow {
     height: 80vh;
   }
-  .search_container
-  {
+  .search_container {
     width: 80vw;
   }
 }

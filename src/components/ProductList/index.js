@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AddModal from "../AddModal";
 import "./ProductList.css";
 import { FiEdit2 } from "react-icons/fi";
@@ -17,16 +17,10 @@ const ProductList = () => {
     return result;
   };
 
-
-
-
-
   const [arr, setArr] = useState([{ add_id: uuid(), variants: [] }]);
   const [variant, setVariant] = useState([]);
   const [clicked, setClicked] = useState(arr[0]);
   const [open, setOpen] = useState(false);
-
-  const [isVariantOpen, setIsVariantOpen] = useState(false);
 
   const handleAddProduct = () => {
     setArr([...arr, { add_id: uuid(), variants: [] }]);
@@ -46,16 +40,12 @@ const ProductList = () => {
     setClicked(ele);
     setOpen(true);
   };
-  const handleVariants = (ele, e) => {
-    setIsVariantOpen(!isVariantOpen);
-  };
 
   return (
     <div className="main">
       <div className="heading_text">
-    <div>Add Product</div>
-    <div>discount</div>
-
+        <div>Add Product</div>
+        <div>discount</div>
       </div>
       <DragDropContext
         onDragEnd={(result) => {
@@ -98,12 +88,12 @@ const ProductList = () => {
                       className="product_item_container"
                     >
                       <div className="product_item">
-                        <img src={Dragger} className="img_util" />
-                        <div className="productCount">{idx+1}.</div>
+                        <img src={Dragger} className="img_util" alt="dragg" />
+                        <div className="productCount">{idx + 1}.</div>
                         <div className="first_section">
                           <h1>
                             {(ele?.title &&
-                              ele?.title.slice(0, 15) + ". . .") ||
+                              ele?.title.slice(0, 18) + ". . .") ||
                               "select product"}
                           </h1>
 
@@ -145,24 +135,21 @@ const ProductList = () => {
                           <img
                             src={cancel}
                             className="img_util"
+                            alt="canecel"
                             onClick={() => handleRemove(ele)}
                           />
                         </div>
                       </div>
 
                       <div className="third_section">
-                        { ele.variants.length!==0
-                        && (
+                        {ele.variants.length > 1 && (
                           <div className="list_variant_container">
-                            {
-
-                            }
+                            {}
                             <button
                               onClick={(e) => {
-
-                                 
-                                document.getElementById("subItem-"+ele.add_id).classList.toggle("invisible")
-                            
+                                document
+                                  .getElementById("subItem-" + ele.add_id)
+                                  .classList.toggle("invisible");
                               }}
                             >
                               list variants <MdKeyboardArrowDown />
@@ -202,10 +189,9 @@ const ProductList = () => {
                               <div
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
-                                id={"subItem-"+ele.add_id}
-                               
+                                id={"subItem-" + ele.add_id}
                               >
-                                {
+                                {ele.variants.length > 1 &&
                                   ele?.variants.map((elem, index) => {
                                     return (
                                       <Draggable
@@ -223,14 +209,15 @@ const ProductList = () => {
                                             <img
                                               src={Dragger}
                                               className="img_util"
+                                              alt="dragger"
                                             />
                                             <div className="subItem">
-                                              <img src="" className="" />
                                               <h2>{elem.title}</h2>
                                             </div>
                                             <img
                                               src={cancel}
                                               className="img_util"
+                                              alt="cancel"
                                               onClick={() => {
                                                 let temp = ele.variants.filter(
                                                   (item) => item.id !== elem.id
@@ -272,7 +259,7 @@ const ProductList = () => {
                                       </Draggable>
                                     );
                                   })}
-                                  {provided.placeholder}
+                                {provided.placeholder}
                               </div>
                             )}
                           </Droppable>
