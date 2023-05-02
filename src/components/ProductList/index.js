@@ -52,7 +52,11 @@ const ProductList = () => {
 
   return (
     <div className="main">
-      <div className="heading_text">Add Product</div>
+      <div className="heading_text">
+    <div>Add Product</div>
+    <div>discount</div>
+
+      </div>
       <DragDropContext
         onDragEnd={(result) => {
           console.log(result);

@@ -138,6 +138,7 @@ const AddModal = ({
                       className="checkbox_add"
                       onChange={(e) => handleAllCheck(e, ele)}
                       style={{backgroundColor:"green"}}
+                      id={`check-${ele.id}`}
                     />
                     <img
                       src={ele?.image?.src}
@@ -161,11 +162,22 @@ const AddModal = ({
                                   type: "ADD_ONE",
                                   payload: { ele, elem, clicked },
                                 });
+
+                                document.getElementById(`check-${ele.id}`).checked =true;
                               } else if (e.target.checked === false) {
                                 dispatch({
                                   type: "REMOVE_ONE",
                                   payload: { ele, elem },
                                 });
+                                let a = state.products.findIndex((item)=>item.id===ele.id)
+                                console.log(a);
+                                if(state.products[a].variants.length===1)
+                                {
+                                    
+                                      document.getElementById(`check-${ele.id}`).checked =false;
+                                    
+                                }
+                                
                               }
                             }}
                           />
@@ -184,7 +196,7 @@ const AddModal = ({
         </div>
         <div className="endBox">
           <h4>
-            {state?.products.length || "no item selected"} products selected
+            {state?.products.length || "0"} products selected
           </h4>
           <div className="btn_container">
             <div onClick={handlecancelProduct} className="btn_cancel">

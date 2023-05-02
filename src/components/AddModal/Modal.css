@@ -215,7 +215,16 @@ input {
   {
    
 
-    transform: scale(.5);
-    margin: 0;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  }
+  .contentShow
+  {
+    height: 80vh;
+  }
+  .search_container
+  {
+    width: 80vw;
   }
 }
