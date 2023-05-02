@@ -179,14 +179,14 @@ const ProductList = () => {
                             }
 
                             let temp = reorder(
-                              ele?.variants,
+                              ele.variants,
                               result.source.index,
                               result.destination.index
                             );
 
                             const temparr = arr.map((item) => {
                               if (item.add_id === ele.add_id) {
-                                return { ...item, variant: temp };
+                                return { ...item, variants: temp };
                               }
                               return item;
                             });
